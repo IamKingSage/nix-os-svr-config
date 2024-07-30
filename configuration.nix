@@ -18,7 +18,7 @@
     grub.useOSProber = true;
   };
 
-  # Networking Configuration.
+  # Networking and Firewall Configuration.
   networking = {
     # Enable Networking
     networkmanager.enable = true;
@@ -29,6 +29,14 @@
     # Configure Network proxy if necessary.
     # proxy.default = "http://user:password@proxy:port/";
     # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    
+    # Open ports in the firewall.
+    # firewall.allowedTCPPorts = [ ... ];
+    # firewall.allowedUDPPorts = [ ... ];
+  
+    # Or disable the firewall altogether.
+    # firewall.enable = true;
+
   };
 
   # Set your time zone.
@@ -92,26 +100,49 @@
 
     # Enable sound with pipewire.
     # pipewire = {
-    # enable = lib.mkDefault true;
-    # alsa.enable = true;
-    # alsa.support32Bit = true;
-    # pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+      # enable = lib.mkDefault true;
+      # alsa.enable = true;
+      # alsa.support32Bit = true;
+      # pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+      # use the example session manager (no others are packaged yet so this is enabled by default,
+      # no need to redefine it in your config for now)
+      #media-session.enable = true;
     # };
 
     # Enable touchpad support (enabled default in most desktopManager).
     # xserver.libinput.enable = true;
   };
 
-  # Enable direnv program
-  programs.direnv.enable = true;
+  # Install Programs
+  programs = {
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+    # Install Firefox
+    # firefox.enable = true;
+  
+    # Install nix-ld? Have no idea what this is...
+    nix-ld = {
+      enable = true;
+      package = pkgs.nix-ld-rs;
+    };
+  
+    # Install Git to Nix
+    git.enable = true;
+
+    # Enable direnv program
+    direnv.enable = true;
+
+    # Some programs need SUID wrappers, can be configured further or are started in user sessions.
+    # mtr.enable = true;
+    # gnupg.agent = {
+    #   enable = true;
+    #   enableSSHSupport = true;
+    # };
+  };
+
+  # Define a user account for OpenSSH. Don't forget to set a password with ‘passwd’.
   users.users.sage = {
     isNormalUser = true;
     description = "sage";
@@ -155,10 +186,6 @@
   # "sagenixsvr.tailf51c16.ts.net" is the tailscale ssh setup.
   # Looking up how to set up SSH between Tailscale and NixOS
 
-
-  # Install firefox.
-  # programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -170,35 +197,12 @@
     wget
     nixpkgs-fmt
   ];
-  programs.nix-ld = {
-    enable = true;
-    package = pkgs.nix-ld-rs;
-  };
-
-  # Add Git to Nix
-  programs.git.enable = true;
 
   nix.nixPath = [
     "nixos-config=/home/sage/nixosconfig/configuration.nix"
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
