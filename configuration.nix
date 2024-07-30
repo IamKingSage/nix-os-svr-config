@@ -116,7 +116,7 @@
     # xserver.libinput.enable = true;
   };
 
-  # Install Programs
+  # Install Programs.
   programs = {
 
     # Install Firefox
